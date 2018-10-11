@@ -6,6 +6,6 @@ public class ModelTest {
 
     @Test
     public void getRentPerHourShouldReturn5ForAvon() {
-        assertEquals(5f,Model.Avon.getRentPerHour());
+        assertEquals(5f, Model.Avon.getRentPerHour());
     }
 }

@@ -1,15 +1,23 @@
 import java.util.Date;
 
-class CustomerRecord {
-    private Bicycle bicycle;
-    private Date checkOutTime;
-    private Date returnTime;
+public class CustomerRecord {
+    private int bicycleId;
+    private int totalHours;
+    private float rentPerHour;
     private float totalRent;
 
-    CustomerRecord(Bicycle bicycle, Date checkOutTime, Date returnTime, float totalRent) {
-        this.bicycle = bicycle;
-        this.checkOutTime = checkOutTime;
-        this.returnTime = returnTime;
+    public CustomerRecord(int bicycleId, int totalHours, float rentPerHour, float totalRent) {
+        this.bicycleId = bicycleId;
+        this.totalHours = totalHours;
+        this.rentPerHour = rentPerHour;
         this.totalRent = totalRent;
+    }
+
+    @Override
+    public String toString() {
+        return "\nbicycleId= " + bicycleId +
+                " totalHours= " + totalHours +
+                " rentPerHour= " + rentPerHour +
+                " totalRent= " + totalRent;
     }
 }

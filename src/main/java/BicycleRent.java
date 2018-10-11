@@ -7,7 +7,6 @@ class BicycleRent {
         this.hours = hours;
     }
 
-
     float calculate() {
         return bicycle.model.getRentPerHour() * hours;
     }

@@ -7,7 +7,7 @@ public class BicycleRentTest {
     @Test
     public void shouldReturnCalculatedRent() {
         Bicycle bicycle = new Bicycle(1, Model.BSA);
-        BicycleRent rent = new BicycleRent(bicycle,3);
-        assertEquals(12f,rent.calculate());
+        BicycleRent rent = new BicycleRent(bicycle, 3);
+        assertEquals(12f, rent.calculate());
     }
 }
