@@ -14,5 +14,8 @@ public class Constants {
     public static final String ENTER_NUMBER_OF_HOURS = "Enter number of hours";
     public static final String THANK_YOU_FOR_RETURNING_THE_BICYCLE = "Thank you for returning the bicycle";
     public static final String THIS_IS_NOT_THE_VALID_CYCLE_TO_RETURN = "This is not the valid cycle to return";
+    public static final String ENTER_YOUR_OPTION = "Enter your option";
+    public static final String SELECT_A_VALID_OPTION = "Select a valid option";
+    public static final String INVALID_USER = "Invalid user";
 
 }

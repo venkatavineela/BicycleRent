@@ -5,9 +5,11 @@ import static java.lang.Integer.parseInt;
 class BicycleVendor {
 
 
-    private List<Integer> customerList = new ArrayList<>();
+    Map<Integer, Customer> customerList = new HashMap<>();
     private Map<Integer, Bicycle> bicycleList = new HashMap<>();
     Map<Integer, Customer> checkedOutBicycleList = new HashMap<>();
+    private Map<String, CustomerMenuOption> customerMenu = new HashMap<>();
+
     private InputOutput io;
 
 
@@ -18,13 +20,22 @@ class BicycleVendor {
     }
 
     private void addCustomers() {
-        customerList.add(1);
-        customerList.add(2);
-        customerList.add(3);
-        customerList.add(4);
-        customerList.add(5);
-        customerList.add(6);
-        customerList.add(7);
+        List<CustomerRecord> invoice1 = new ArrayList<>();
+        List<CustomerRecord> invoice2 = new ArrayList<>();
+        List<CustomerRecord> invoice3 = new ArrayList<>();
+        List<CustomerRecord> invoice4 = new ArrayList<>();
+        List<CustomerRecord> invoice5 = new ArrayList<>();
+        List<CustomerRecord> invoice6 = new ArrayList<>();
+        List<CustomerRecord> invoice7 = new ArrayList<>();
+
+
+        customerList.put(1,new Customer(1,invoice1));
+        customerList.put(2,new Customer(1,invoice2));
+        customerList.put(3,new Customer(1,invoice3));
+        customerList.put(4,new Customer(1,invoice4));
+        customerList.put(5,new Customer(1,invoice5));
+        customerList.put(6,new Customer(1,invoice6));
+        customerList.put(7,new Customer(1,invoice7));
     }
 
     private void addBicycles() {
@@ -35,7 +46,6 @@ class BicycleVendor {
         bicycleList.put(5, new Bicycle(5, Model.Avon));
         bicycleList.put(6, new Bicycle(6, Model.Montra));
         bicycleList.put(7, new Bicycle(7, Model.Kross));
-
     }
 
     private void addCustomerRecordToInvoice(Customer customer, CustomerRecord record) {
@@ -74,4 +84,36 @@ class BicycleVendor {
             io.display(customer.invoice.get(i).toString());
         }
     }
+
+    void optionIsInValid() {
+        io.display(Constants.SELECT_A_VALID_OPTION);
+    }
+
+    void processCustomerRequest() {
+        io.display(Constants.ENTER_USER_ID);
+        int userId = parseInt(io.getInput());
+        if (customerList.containsKey(userId)) {
+            io.display(Constants.USER_MENU);
+            io.display(Constants.ENTER_YOUR_OPTION);
+            String option = io.getInput();
+            while (option != "0") {
+                if (customerMenu.containsKey(option)) {
+                    customerMenu.get(option).execute(this, customerList.get(option));
+                } else {
+                    customerMenu.get("invalid").execute(this, customerList.get(option));
+                }
+                io.display(Constants.USER_MENU);
+            }
+        } else {
+            io.display(Constants.INVALID_USER);
+        }
+    }
+
+    private void customerMenuMap() {
+        customerMenu.put("1", CustomerMenuOption.CheckOutBicycle);
+        customerMenu.put("2", CustomerMenuOption.ReturnBicycle);
+        customerMenu.put("3", CustomerMenuOption.Invoice);
+        customerMenu.put("invalid", CustomerMenuOption.Invalid);
+    }
+
 }

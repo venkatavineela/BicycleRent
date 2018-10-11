@@ -101,7 +101,20 @@ public class BicycleVendorTest {
                 " totalHours= 2" +
                 " rentPerHour= 4.5" +
                 " totalRent= 9.0");
+    }
 
+    @Test
+    public void optionInvalidMethodShouldReturnSelectValidOption() {
+        vendor.optionIsInValid();
+        verify(io).display("Select a valid option");
+    }
 
+    @Test
+    public void processCustomerRequestShouldreturnInvalidUserMessageForInvalidCustomer() {
+        when(io.getInput()).thenReturn("8");
+
+        vendor.processCustomerRequest();
+
+        verify(io).display("Invalid user");
     }
 }
