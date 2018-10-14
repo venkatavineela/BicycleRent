@@ -25,7 +25,7 @@ public class BicycleVendorTest {
                 "    4.BSA(4/hr)\n" +
                 "    5.Avon(5/hr)\n" +
                 "    6.Montra(5.5/hr)\n" +
-                "    7.Kross(6/hr)");
+                "    7.Kross(6/hr)\n");
         verify(io).display("Enjoy the ride");
     }
 
@@ -115,6 +115,29 @@ public class BicycleVendorTest {
 
         vendor.processCustomerRequest();
 
+        verify(io).display("Enter user ID");
         verify(io).display("Invalid user");
     }
+
+    @Test
+    public void processCustomerRequestShouldReturnUserMenuAndAskForOptionForValidCustomer() {
+        when(io.getInput()).thenReturn("3").thenReturn("2").thenReturn("0");
+
+        vendor.processCustomerRequest();
+
+        verify(io).display("Enter user ID");
+        verify(io,times(2)).display("1.CheckOut\n2.Return\n3.Invoice\n0.Quit\n");
+        verify(io).display("Enter your option");
+    }
+
+    @Test
+    public void processUserRequestShouldReturnMainMenu() {
+        when(io.getInput()).thenReturn("0");
+
+        vendor.processUserRequest();
+
+        verify(io).display("1.Owner\n2.User\n0.Quit\n");
+    }
 }
+
+

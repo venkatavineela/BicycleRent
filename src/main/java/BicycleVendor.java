@@ -93,6 +93,7 @@ class BicycleVendor {
         io.display(Constants.ENTER_USER_ID);
         int userId = parseInt(io.getInput());
         if (customerList.containsKey(userId)) {
+            customerMenuMap();
             io.display(Constants.USER_MENU);
             io.display(Constants.ENTER_YOUR_OPTION);
             String option = io.getInput();
@@ -103,9 +104,46 @@ class BicycleVendor {
                     customerMenu.get("invalid").execute(this, customerList.get(option));
                 }
                 io.display(Constants.USER_MENU);
+                option = io.getInput();
             }
         } else {
             io.display(Constants.INVALID_USER);
+        }
+    }
+
+    void processUserRequest(){
+        io.display(Constants.MAIN_MENU);
+        String option = io.getInput();
+        while (option != "0") {
+            switch (option) {
+                case "1":
+                    processOwnerRequest();
+                    break;
+                case "2":
+                    processCustomerRequest();
+                    break;
+                default:
+                    optionIsInValid();
+            }
+            io.display(Constants.MAIN_MENU);
+            option = io.getInput();
+        }
+
+    }
+
+     void processOwnerRequest() {
+        String customers = "";
+        for (int i = 0;i<customerList.size();i++) {
+            customers += customerList.get(i).toString();
+            customers += "\n";
+        }
+        io.display(customers);
+        io.display(Constants.ENTER_CUSTOMER_ID_TO_SEE_THEIR_INVOICE);
+        int id = parseInt(io.getInput());
+        if (customerList.containsKey(id)) {
+            io.display(customerList.get(id).invoice.toString());
+        }else {
+            io.display(Constants.INVALID_ID);
         }
     }
 

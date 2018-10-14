@@ -10,4 +10,11 @@ class Customer {
         this.invoice = invoice;
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", invoice=" + invoice +
+                '}';
+    }
 }
