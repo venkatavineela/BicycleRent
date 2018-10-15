@@ -6,7 +6,7 @@ public class Constants {
             "    4.BSA(4/hr)\n" +
             "    5.Avon(5/hr)\n" +
             "    6.Montra(5.5/hr)\n" +
-            "    7.Kross(6/hr)\n";
+            "    7.Kross(6/hr)";
     public static final String ENJOY_THE_RIDE = "Enjoy the ride";
     public static final String USER_MENU = "1.CheckOut\n2.Return\n3.Invoice\n0.Quit\n";
     public static final String THAT_BICYCLE_IS_NOT_AVAILABLE = "That bicycle is not available";

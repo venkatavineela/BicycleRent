@@ -5,7 +5,7 @@ import static java.lang.Integer.parseInt;
 class BicycleVendor {
 
 
-    Map<Integer, Customer> customerList = new HashMap<>();
+    private Map<Integer, Customer> customerList = new HashMap<>();
     private Map<Integer, Bicycle> bicycleList = new HashMap<>();
     Map<Integer, Customer> checkedOutBicycleList = new HashMap<>();
     private Map<String, CustomerMenuOption> customerMenu = new HashMap<>();
@@ -68,7 +68,7 @@ class BicycleVendor {
         int cycleId = parseInt(io.getInput());
         io.display(Constants.ENTER_NUMBER_OF_HOURS);
         int totalHours = parseInt(io.getInput());
-        if ((checkedOutBicycleList.containsKey(cycleId)) && (checkedOutBicycleList.get(cycleId).equals(customer))) {
+        if ((checkedOutBicycleList.containsKey(cycleId)) && (checkedOutBicycleList.get(cycleId) == (customer))) {
             Bicycle bicycle = bicycleList.get(cycleId);
             BicycleRent rent = new BicycleRent(bicycle, totalHours);
             addCustomerRecordToInvoice(customer, new CustomerRecord(cycleId, totalHours, bicycle.model.getRentPerHour(), rent.calculate()));
@@ -97,11 +97,11 @@ class BicycleVendor {
             io.display(Constants.USER_MENU);
             io.display(Constants.ENTER_YOUR_OPTION);
             String option = io.getInput();
-            while (option != "0") {
+            while (!option.equals("0")) {
                 if (customerMenu.containsKey(option)) {
-                    customerMenu.get(option).execute(this, customerList.get(option));
+                    customerMenu.get(option).execute(this, customerList.get(userId));
                 } else {
-                    customerMenu.get("invalid").execute(this, customerList.get(option));
+                    customerMenu.get("invalid").execute(this, customerList.get(userId));
                 }
                 io.display(Constants.USER_MENU);
                 option = io.getInput();
@@ -114,7 +114,7 @@ class BicycleVendor {
     void processUserRequest(){
         io.display(Constants.MAIN_MENU);
         String option = io.getInput();
-        while (option != "0") {
+        while (!option.equals("0")) {
             switch (option) {
                 case "1":
                     processOwnerRequest();
@@ -133,15 +133,17 @@ class BicycleVendor {
 
      void processOwnerRequest() {
         String customers = "";
-        for (int i = 0;i<customerList.size();i++) {
-            customers += customerList.get(i).toString();
+        for (int i = 1;i <= customerList.size();i++) {
+            customers += i;
             customers += "\n";
         }
         io.display(customers);
         io.display(Constants.ENTER_CUSTOMER_ID_TO_SEE_THEIR_INVOICE);
         int id = parseInt(io.getInput());
         if (customerList.containsKey(id)) {
-            io.display(customerList.get(id).invoice.toString());
+            for( int i=0; i<customerList.get(id).invoice.size();i++) {
+                io.display(customerList.get(id).invoice.get(i).toString());
+            }
         }else {
             io.display(Constants.INVALID_ID);
         }

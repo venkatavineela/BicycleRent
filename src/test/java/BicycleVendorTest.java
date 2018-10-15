@@ -25,7 +25,7 @@ public class BicycleVendorTest {
                 "    4.BSA(4/hr)\n" +
                 "    5.Avon(5/hr)\n" +
                 "    6.Montra(5.5/hr)\n" +
-                "    7.Kross(6/hr)\n");
+                "    7.Kross(6/hr)");
         verify(io).display("Enjoy the ride");
     }
 
@@ -66,11 +66,19 @@ public class BicycleVendorTest {
 
         List<CustomerRecord> list = new ArrayList<>();
         Customer customer = new Customer(1, list);
-        vendor.checkedOutBicycleList.put(3, customer);
-        when(io.getInput()).thenReturn("3").thenReturn("2");
+        when(io.getInput()).thenReturn("3").thenReturn("3").thenReturn("2");
 
+        vendor.processCheckOut(customer);
         vendor.processReturnBicycle(customer);
 
+        verify(io).display("1.Hero(3/hr)\n" +
+                "   2.Hercules(2.5/hr)\n" +
+                "    3.Atlas(4.5/hr)\n" +
+                "    4.BSA(4/hr)\n" +
+                "    5.Avon(5/hr)\n" +
+                "    6.Montra(5.5/hr)\n" +
+                "    7.Kross(6/hr)");
+        verify(io).display("Enjoy the ride");
         verify(io).display("Enter the id of cycle you want to return");
         verify(io).display("Enter number of hours");
         verify(io).display("Thank you for returning the bicycle");
@@ -131,13 +139,38 @@ public class BicycleVendorTest {
     }
 
     @Test
-    public void processUserRequestShouldReturnMainMenu() {
-        when(io.getInput()).thenReturn("0");
+    public void processUserRequestShouldProcessCustomerRequestAsWellAsOwnerRequest() {
+        List<CustomerRecord> list = new ArrayList<>();
+        Customer customer = new Customer(1, list);
+        when(io.getInput()).thenReturn("2").thenReturn("4").thenReturn("1").thenReturn("3").thenReturn("2").thenReturn("3").thenReturn("2").thenReturn("0").thenReturn("1").thenReturn("4").thenReturn("0");
 
         vendor.processUserRequest();
 
-        verify(io).display("1.Owner\n2.User\n0.Quit\n");
+        verify(io,times(3)).display("1.Owner\n2.User\n0.Quit\n");
+        verify(io).display("Enter user ID");
+        verify(io,times(3)).display("1.CheckOut\n2.Return\n3.Invoice\n0.Quit\n");
+        verify(io).display("Enter your option");
+
+        verify(io).display("1.Hero(3/hr)\n" +
+                "   2.Hercules(2.5/hr)\n" +
+                "    3.Atlas(4.5/hr)\n" +
+                "    4.BSA(4/hr)\n" +
+                "    5.Avon(5/hr)\n" +
+                "    6.Montra(5.5/hr)\n" +
+                "    7.Kross(6/hr)");
+        verify(io).display("Enjoy the ride");
+        verify(io).display("Enter the id of cycle you want to return");
+        verify(io).display("Enter number of hours");
+        verify(io).display("Thank you for returning the bicycle");
+
+        verify(io).display("1\n2\n3\n4\n5\n6\n7\n");
+        verify(io).display("Enter customer Id to see their invoice");
+        verify(io).display("\nbicycleId= 3" +
+                " totalHours= 2" +
+                " rentPerHour= 4.5" +
+                " totalRent= 9.0");
     }
+
 }
 
 
