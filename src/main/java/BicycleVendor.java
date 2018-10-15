@@ -29,13 +29,13 @@ class BicycleVendor {
         List<CustomerRecord> invoice7 = new ArrayList<>();
 
 
-        customerList.put(1,new Customer(1,invoice1));
-        customerList.put(2,new Customer(1,invoice2));
-        customerList.put(3,new Customer(1,invoice3));
-        customerList.put(4,new Customer(1,invoice4));
-        customerList.put(5,new Customer(1,invoice5));
-        customerList.put(6,new Customer(1,invoice6));
-        customerList.put(7,new Customer(1,invoice7));
+        customerList.put(1, new Customer(1, invoice1));
+        customerList.put(2, new Customer(1, invoice2));
+        customerList.put(3, new Customer(1, invoice3));
+        customerList.put(4, new Customer(1, invoice4));
+        customerList.put(5, new Customer(1, invoice5));
+        customerList.put(6, new Customer(1, invoice6));
+        customerList.put(7, new Customer(1, invoice7));
     }
 
     private void addBicycles() {
@@ -48,9 +48,6 @@ class BicycleVendor {
         bicycleList.put(7, new Bicycle(7, Model.Kross));
     }
 
-    private void addCustomerRecordToInvoice(Customer customer, CustomerRecord record) {
-        customer.invoice.add(record);
-    }
 
     void processCheckOut(Customer customer) {
         io.display(Constants.CYCLES_FOR_RENT);
@@ -69,15 +66,24 @@ class BicycleVendor {
         io.display(Constants.ENTER_NUMBER_OF_HOURS);
         int totalHours = parseInt(io.getInput());
         if ((checkedOutBicycleList.containsKey(cycleId)) && (checkedOutBicycleList.get(cycleId) == (customer))) {
-            Bicycle bicycle = bicycleList.get(cycleId);
-            BicycleRent rent = new BicycleRent(bicycle, totalHours);
-            addCustomerRecordToInvoice(customer, new CustomerRecord(cycleId, totalHours, bicycle.model.getRentPerHour(), rent.calculate()));
-            checkedOutBicycleList.remove(cycleId);
-            io.display(Constants.THANK_YOU_FOR_RETURNING_THE_BICYCLE);
+            validBicycleToReturn(customer, cycleId, totalHours);
         } else {
             io.display(Constants.THIS_IS_NOT_THE_VALID_CYCLE_TO_RETURN);
         }
     }
+
+    private void validBicycleToReturn(Customer customer, int cycleId, int totalHours) {
+        Bicycle bicycle = bicycleList.get(cycleId);
+        BicycleRent rent = new BicycleRent(bicycle, totalHours);
+        addCustomerRecordToInvoice(customer, new CustomerRecord(cycleId, totalHours, bicycle.model.getRentPerHour(), rent.calculate()));
+        checkedOutBicycleList.remove(cycleId);
+        io.display(Constants.THANK_YOU_FOR_RETURNING_THE_BICYCLE);
+    }
+
+    private void addCustomerRecordToInvoice(Customer customer, CustomerRecord record) {
+        customer.invoice.add(record);
+    }
+
 
     void processInvoice(Customer customer) {
         for (int i = 0; i < customer.invoice.size(); i++) {
@@ -97,21 +103,25 @@ class BicycleVendor {
             io.display(Constants.USER_MENU);
             io.display(Constants.ENTER_YOUR_OPTION);
             String option = io.getInput();
-            while (!option.equals("0")) {
-                if (customerMenu.containsKey(option)) {
-                    customerMenu.get(option).execute(this, customerList.get(userId));
-                } else {
-                    customerMenu.get("invalid").execute(this, customerList.get(userId));
-                }
-                io.display(Constants.USER_MENU);
-                option = io.getInput();
-            }
+            serveExistingCustomer(userId, option);
         } else {
             io.display(Constants.INVALID_USER);
         }
     }
 
-    void processUserRequest(){
+    private void serveExistingCustomer(int userId, String option) {
+        while (!option.equals("0")) {
+            if (customerMenu.containsKey(option)) {
+                customerMenu.get(option).execute(this, customerList.get(userId));
+            } else {
+                customerMenu.get("invalid").execute(this, customerList.get(userId));
+            }
+            io.display(Constants.USER_MENU);
+            option = io.getInput();
+        }
+    }
+
+    void processUserRequest() {
         io.display(Constants.MAIN_MENU);
         String option = io.getInput();
         while (!option.equals("0")) {
@@ -131,9 +141,9 @@ class BicycleVendor {
 
     }
 
-     void processOwnerRequest() {
+    void processOwnerRequest() {
         String customers = "";
-        for (int i = 1;i <= customerList.size();i++) {
+        for (int i = 1; i <= customerList.size(); i++) {
             customers += i;
             customers += "\n";
         }
@@ -141,10 +151,10 @@ class BicycleVendor {
         io.display(Constants.ENTER_CUSTOMER_ID_TO_SEE_THEIR_INVOICE);
         int id = parseInt(io.getInput());
         if (customerList.containsKey(id)) {
-            for( int i=0; i<customerList.get(id).invoice.size();i++) {
+            for (int i = 0; i < customerList.get(id).invoice.size(); i++) {
                 io.display(customerList.get(id).invoice.get(i).toString());
             }
-        }else {
+        } else {
             io.display(Constants.INVALID_ID);
         }
     }
